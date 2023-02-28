@@ -70,8 +70,6 @@ export class WebPushToggle extends LitElement {
 
       if (subscription) {
         this.subscribed = true;
-        console.log(subscription);
-        console.log(JSON.parse(JSON.stringify(subscription)));
         this.dispatchEvent(new CustomEvent('web-push-subscribed', {
           bubbles: true,
           composed: true,
