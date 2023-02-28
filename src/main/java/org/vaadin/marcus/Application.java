@@ -18,7 +18,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 @SpringBootApplication
 @Theme(value = "webpush")
-@PWA(name = "Web Push", shortName = "Pushy")
+@PWA(name = "Web Push", shortName = "Push")
 public class Application implements AppShellConfigurator {
 
     public static void main(String[] args) {

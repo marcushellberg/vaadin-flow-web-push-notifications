@@ -41,11 +41,12 @@ public class WebPushToggle extends Component {
 
     @DomEvent("web-push-subscribed")
     public static class SubscribeEvent extends WebPushSubscriptionEvent {
-        public SubscribeEvent(WebPushToggle source,
-                              boolean fromClient,
-                              @EventData("event.detail.endpoint") String endpoint,
-                              @EventData("event.detail.keys.auth") String auth,
-                              @EventData("event.detail.keys.p256dh") String p256dh) {
+        public SubscribeEvent(
+                WebPushToggle source,
+                boolean fromClient,
+                @EventData("event.detail.endpoint") String endpoint,
+                @EventData("event.detail.keys.auth") String auth,
+                @EventData("event.detail.keys.p256dh") String p256dh) {
             super(source, fromClient, new Subscription(endpoint, new Subscription.Keys(p256dh, auth)));
         }
     }
@@ -53,11 +54,13 @@ public class WebPushToggle extends Component {
     @DomEvent("web-push-unsubscribed")
     public static class UnsubscribeEvent extends WebPushSubscriptionEvent {
 
-        public UnsubscribeEvent(WebPushToggle source,
-                                boolean fromClient,
-                                @EventData("event.detail.endpoint") String endpoint,
-                                @EventData("event.detail.keys.auth") String auth,
-                                @EventData("event.detail.keys.p256dh") String p256dh) {
+        public UnsubscribeEvent(
+                WebPushToggle source,
+                boolean fromClient,
+                @EventData("event.detail.endpoint") String endpoint,
+                @EventData("event.detail.keys.auth") String auth,
+                @EventData("event.detail.keys.p256dh") String p256dh) {
+
             super(source, fromClient, new Subscription(endpoint, new Subscription.Keys(p256dh, auth)));
         }
     }

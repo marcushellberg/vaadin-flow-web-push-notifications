@@ -1,21 +1,17 @@
 package org.vaadin.marcus.webpush;
 
 import jakarta.annotation.PostConstruct;
-import nl.martijndwars.webpush.PushService;
 import nl.martijndwars.webpush.Notification;
+import nl.martijndwars.webpush.PushService;
 import nl.martijndwars.webpush.Subscription;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.jose4j.lang.JoseException;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.security.Security;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 @Service
