@@ -1,24 +1,20 @@
 package org.vaadin.marcus.views;
 
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import nl.martijndwars.webpush.Subscription;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.vaadin.marcus.webpush.WebPushService;
 import org.vaadin.marcus.webpush.WebPushToggle;
-
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @PageTitle("Web Push")
 @Route(value = "")
 public class MainView extends VerticalLayout {
 
     private final WebPushService webPushService;
-    private final List<Subscription> subscriptions = new ArrayList<>();
 
     public MainView(WebPushService webPushService) {
         this.webPushService = webPushService;
@@ -31,36 +27,24 @@ public class MainView extends VerticalLayout {
             unsubscribe(e.getSubscription());
         });
 
+        TextField msg = new TextField("Message:");
+        Button btn = new Button("Notify all users!",
+                e -> webPushService.notifyAll("Message from user", msg.getValue()));
+
         add(
                 new H1("Web Push Notification Demo"),
-                toggle
+                toggle,
+                msg,
+                btn
         );
     }
 
     public void subscribe(Subscription subscription) {
-        System.out.println("Subscribed to " + subscription.endpoint);
-        this.subscriptions.add(subscription);
+        webPushService.subscribe(subscription);
     }
 
     public void unsubscribe(Subscription subscription) {
-        System.out.println("Unsubscribed from " + subscription.endpoint);
-        subscriptions.remove(subscription);
-    }
-
-    @Scheduled(fixedRate = 15000)
-    private void sendNotifications() {
-        System.out.println("Sending notifications to all subscribers");
-
-        var json = """
-        {
-          "title": "Server says hello!",
-          "body": "It is now: %s"
-        }
-        """;
-
-        subscriptions.forEach(subscription -> {
-            webPushService.sendNotification(subscription, String.format(json, LocalTime.now()));
-        });
+        webPushService.unsubscribe(subscription);
     }
 
 }
