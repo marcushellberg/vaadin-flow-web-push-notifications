@@ -1,5 +1,28 @@
 # Example of sending Web Push notifications from Vaadin Flow
 
+This example application shows how to subscribe to web push messages and how to send them with Vaadin Flow and the [webpush-java](https://github.com/web-push-libs/webpush-java) library. 
+
+Signup sequence:
+```mermaid
+sequenceDiagram
+    participant B as Browser
+    participant S as Server
+    participant P as Push Server
+    B->>P: Sign up for push messages
+    P-->>B: Return subscription (endpoint, secret, and keys)
+    B->>S: Save subscription
+```
+
+Send message sequence:
+```mermaid
+sequenceDiagram
+    participant B as Browser
+    participant S as Server
+    participant P as Push Server
+    S->>P: Send message
+    P->>B: Push message
+```
+
 ## Requirements
 - Java 17+
 - Node 18+
