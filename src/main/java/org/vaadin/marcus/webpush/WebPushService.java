@@ -95,6 +95,4 @@ public class WebPushService {
             throw new RuntimeException(e);
         }
     }
-
-
 }
