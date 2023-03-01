@@ -3,22 +3,20 @@ package org.vaadin.marcus.webpush;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
-import nl.martijndwars.webpush.PushService;
 import nl.martijndwars.webpush.Notification;
+import nl.martijndwars.webpush.PushService;
 import nl.martijndwars.webpush.Subscription;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.jose4j.lang.JoseException;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.GeneralSecurityException;
 import java.security.Security;
-import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,15 +29,17 @@ public class WebPushService {
     private String publicKey;
     @Value("${vapid.private.key}")
     private String privateKey;
+    @Value("${vapid.subject}")
+    private String subject;
 
     private PushService pushService;
 
-    private Map<String, Subscription> endpointToSubscription = new HashMap<>();
+    private final Map<String, Subscription> endpointToSubscription = new HashMap<>();
 
     @PostConstruct
     private void init() throws GeneralSecurityException {
         Security.addProvider(new BouncyCastleProvider());
-        pushService = new PushService(publicKey, privateKey);
+        pushService = new PushService(publicKey, privateKey, subject);
     }
 
     public String getPublicKey() {
@@ -51,7 +51,7 @@ public class WebPushService {
             HttpResponse response = pushService.send(new Notification(subscription, messageJson));
             int statusCode = response.getStatusLine().getStatusCode();
             if (statusCode != 201) {
-                System.out.println("Some error from server, status code:" + statusCode);
+                System.out.println("Server error, status code:" + statusCode);
                 InputStream content = response.getEntity().getContent();
                 List<String> strings = IOUtils.readLines(content, "UTF-8");
                 System.out.println(strings);
@@ -77,12 +77,6 @@ public class WebPushService {
     public void unsubscribe(Subscription subscription) {
         System.out.println("Unsubscribed " + subscription.endpoint + " auth:" + subscription.keys.auth);
         endpointToSubscription.remove(subscription.endpoint);
-    }
-
-    @Scheduled(fixedRate = 15000)
-    private void sendNotifications() {
-        System.out.println("Sending notifications to all subscribers:" + endpointToSubscription.keySet());
-        notifyAll("Server says hello!", String.format("It is now: %s", LocalTime.now()));
     }
 
 

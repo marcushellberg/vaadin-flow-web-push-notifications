@@ -15,7 +15,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  * and some desktop browsers.
  *
  */
-@EnableScheduling
 @SpringBootApplication
 @Theme(value = "webpush")
 @PWA(name = "Web Push", shortName = "Push")
