@@ -13,11 +13,11 @@ import org.vaadin.marcus.webpush.WebPushToggle;
 
 @PageTitle("Web Push")
 @Route(value = "")
-public class MainView extends VerticalLayout {
+public class PushView extends VerticalLayout {
 
     private final WebPushService webPushService;
 
-    public MainView(WebPushService webPushService) {
+    public PushView(WebPushService webPushService) {
         this.webPushService = webPushService;
 
         var toggle = new WebPushToggle(webPushService.getPublicKey());
